@@ -1,0 +1,19 @@
+[Unit]
+Description= notes_api_py
+After=network-online.target
+
+[Service]
+User=matvey
+Group=matvey
+WorkingDirectory=/home/matvey/home_works/lesson_18/notes_api_db_replicated
+ExecStart=/home/matvey/home_works/lesson_18/notes_api_db_replicated/venv/bin/python3 -m flask --app notes_api run
+Restart=always
+
+Environment="PRIMARY_DSN=host=10.127.17.30 port=5432 dbname=repmgr user=repmgr password=secret"
+Environment="REPLICA_DSN=host=10.127.17.31 port=5432 dbname=repmgr user=repmgr password=secret"
+
+Environment="FLASK_RUN_HOST=0.0.0.0"
+Environment="FLASK_RUN_PORT=8001"
+
+[Install]
+WantedBy=multi-user.target
